@@ -53,7 +53,7 @@ func set(w http.ResponseWriter, r *http.Request) {
 func del(w http.ResponseWriter, r *http.Request) {
 	K, ok := r.URL.Query()["key"]
 	if ok != true {
-		w.Write([]byte("Data not found"))
+		w.Write([]byte("Key not found"))
 	} else {
 		api.Del(K[0])
 	}
