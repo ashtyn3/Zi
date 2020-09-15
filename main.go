@@ -1,12 +1,23 @@
 package main
 
 import (
-	"texter/api"
-	"fmt"
+	"texter/client"
+	// "math/rand"
+	"texter/util"
+	// "strconv"
+	// "strconv"
+	"os"
 )
+
 func main() {
-	parsed := api.Init()
-	item := api.Pair{Key: "i", Value: "world"}
-	api.Set(item)
-	fmt.Println(api.Get(parsed, "i"))
+	args := os.Args[1:]
+	// idk,_:= util.Contain(args, "hi")
+	if i , stat := util.Find(args, "serve"); stat == true {
+		index := i
+		if index + 1 <= len(args) - 1 {
+			if args[index + 1] != ""{
+				client.Serve(args[index + 1])
+			}
+		}
+	}
 }

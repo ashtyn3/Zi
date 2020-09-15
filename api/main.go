@@ -6,13 +6,14 @@ import(
 	"strings"
 	// "fmt"
 	"os"
+	// "texter/util"
 	// "strconv"
 )
 
 type Pair struct {
-	Key string
-	Value string
-	line int
+	Key string `json:"Key"`
+	Value string `json:"Value"`
+	Line int `json:"Line"`
 }
 
 func Init() []Pair {
@@ -24,12 +25,15 @@ func Init() []Pair {
 	file := string(content)
 	broken := strings.Split(file, "\n")
 	for i, item := range broken {
-		var line string = item
-		parsed := strings.Fields(line)
-		k := parsed[0]
-		v := strings.Join(parsed[1:], " ")
-		fullPair := Pair{Key: k, Value: v, line: i + 1}
-		list = append(list, fullPair)
+		var trimmed string;
+		if strings.Trim(item, trimmed) != "" {
+			var line string = item
+			parsed := strings.Fields(line)
+			k := parsed[0]
+			v := strings.Join(parsed[1:], " ")
+			fullPair := Pair{Key: k, Value: v, Line: i + 1}
+			list = append(list, fullPair)
+		}
 	}
 	return list
 }
@@ -40,7 +44,7 @@ func Get(data []Pair,key string) Pair {
 			return item
 		}
 	}
-	return Pair{Key: "", Value: "", line:0}
+	return Pair{Key: "", Value: "", Line:0}
 }
 
 func Set(item Pair) {
@@ -52,5 +56,23 @@ func Set(item Pair) {
 	defer f.Close()
 	if _, err := f.WriteString("\n"+item.Key + " " + item.Value); err != nil {
 		log.Println(err)
+	}
+}
+
+func Del(key string) {
+	parsed := Init()
+	for i := 0; i < len(parsed); i++ {
+		if  parsed[i].Key == key {
+			parsed = append(parsed[:i], parsed[i+1:]...)
+			i--
+	}
+	}
+	f,err := os.Create("dump.txter")
+	if err != nil {
+		panic(err)
+	}
+	f.WriteString("")
+	for _, item := range parsed {
+		Set(item)
 	}
 }
