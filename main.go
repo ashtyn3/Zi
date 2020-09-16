@@ -24,7 +24,7 @@ func main() {
 			if args[index + 1] != ""{
 				if _ , stat := util.Find(args, "--background"); stat == true {
 					port := args[index + 1]
-					ok := exec.Command("god", "-r", ".", "-l", "the.log", "zi", "serve",port)
+					ok := exec.Command("god", "-r", ".", "-l", "zi.log", "zi", "serve",port)
 					ok.Run()
 					fmt.Println("Server running on port "+ port)
 				} else {
