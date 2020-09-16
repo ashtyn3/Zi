@@ -28,7 +28,7 @@ This will install the CLI and get all of the dependencies.
 The whole server and the database can be started with one simple command.
 
 ```bash
-    zi serve #by default the server will run on port 9090
+zi serve #by default the server will run on port 9090
 ```
 
 You can specify a port with the following.
