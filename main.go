@@ -1,9 +1,9 @@
 package main
 
 import (
-	"texter/client"
+	"zi/client"
 	// "math/rand"
-	"texter/util"
+	"zi/util"
 	// "strconv"
 	"fmt"
 	"os/exec"
@@ -14,7 +14,7 @@ import (
 func main() {
 	args := os.Args[1:]
 	// isometric2
-	hero := figure.NewFigure("Texter","larry3d", true)
+	hero := figure.NewFigure("Zi","larry3d", true)
 	hero.Print()
 	fmt.Println("")
 	// idk,_:= util.Contain(args, "hi")
@@ -24,7 +24,7 @@ func main() {
 			if args[index + 1] != ""{
 				if _ , stat := util.Find(args, "--background"); stat == true {
 					port := args[index + 1]
-					ok := exec.Command("god", "-r", ".", "-l", "the.log", "texter", "serve",port)
+					ok := exec.Command("god", "-r", ".", "-l", "the.log", "zi", "serve",port)
 					ok.Run()
 					fmt.Println("Server running on port "+ port)
 				} else {
@@ -37,7 +37,7 @@ func main() {
 			client.Serve("9090")
 		}
 	} else if _ , stat := util.Find(args, "init"); stat == true {
-		f, err := os.Create("./dump.txter")
+		f, err := os.Create("./dump.zi")
 		if err != nil {
 			panic(err)
 		}

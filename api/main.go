@@ -6,7 +6,7 @@ import(
 	"strings"
 	// "fmt"
 	"os"
-	// "texter/util"
+	// "zi/util"
 	// "strconv"
 )
 
@@ -18,7 +18,7 @@ type Pair struct {
 
 func Init() []Pair {
 	list := []Pair{}
-	content,err := ioutil.ReadFile("dump.txter")
+	content,err := ioutil.ReadFile("dump.zi")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,7 +48,7 @@ func Get(data []Pair,key string) Pair {
 }
 
 func Set(item Pair) {
-	f, err := os.OpenFile("dump.txter",
+	f, err := os.OpenFile("dump.zi",
 	os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -67,7 +67,7 @@ func Del(key string) {
 			i--
 	}
 	}
-	f,err := os.Create("dump.txter")
+	f,err := os.Create("dump.zi")
 	if err != nil {
 		panic(err)
 	}
