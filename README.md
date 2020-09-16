@@ -6,6 +6,12 @@ Zi is a key value database originaly designed for storing coins and id's for Vit
 
 Zi should be put on a server or a local machine and in a directory with a file called `dump.zi`.
 
+## Table of Contents
+
+1. [Installing](#Install)
+2. [Getting started](#Getting-started)
+3. [Docker set-up](#Docker)
+
 ## Install
 
 First things first your going to want to clone the repository.
@@ -44,3 +50,35 @@ You can add the `--background` flag to run the server as a daemon process.
 ```bash
 zi serve 3000 --background
 ```
+
+## Docker
+
+You can spin up a Zi server in no time with Docker and Zi installed (Zi is optional but makes the process a bit easier).
+
+```bash
+sudo docker pull vitecoin/zi
+```
+
+This will install the zi docker cointainer.
+
+Next if you don't have Zi installed you will want to run the docker container manually.
+
+```bash
+sudo docker run -p 5000:9090 -d --mount source=zi-presist,target=/app vitecoin/zi
+```
+
+This will run the docker container in the background on port 5000. You can also remove the `-d` flag to run as foreground process.
+
+If you do have Zi installed run:
+
+```bash
+zi --docker --detached
+```
+
+This will run the container in the background.
+
+```bash
+zi --docker
+```
+
+This will run the docker container noramlly.
