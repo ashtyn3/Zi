@@ -43,11 +43,14 @@ func main() {
 		}
 		f.WriteString("")
 	} else if _,stat := util.Find(args, "--docker"); stat == true {
-		client.Serve("9090")
+		fmt.Println("Server running on port 5000")
+		starter := exec.Command("sudo","docker","run","-p", "5000:9090", "--mount","source=zi-presist,target=/app","vitecoin/zi")
+		starter.Run()
 	} else {
 		fmt.Println("Help:")
 		fmt.Println("\t- serve: Starts server server on port 9090 by default.")
 		fmt.Println("\t  --background: Placed at the end of serve will run server as a daemon proccess.")
+		fmt.Println("\t  --docker: Uses perfered flags to start docker container. Container MUST be installed")
 		fmt.Println("\t- init: Creates dump.zi file.")
 	}
 // TODO: Add background server killing flag.

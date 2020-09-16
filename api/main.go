@@ -4,8 +4,9 @@ import(
 	"io/ioutil"
 	"log"
 	"strings"
-	// "fmt"
+	"fmt"
 	"os"
+	"encoding/json"
 	// "zi/util"
 	// "strconv"
 )
@@ -39,6 +40,7 @@ func Init() []Pair {
 }
 
 func Get(data []Pair,key string) Pair {
+	fmt.Println("Query(GET): "+ key)
 	for _, item := range data {
 		if(item.Key == key) {
 			return item
@@ -57,6 +59,11 @@ func Set(item Pair) {
 	if _, err := f.WriteString("\n"+item.Key + " " + item.Value); err != nil {
 		log.Println(err)
 	}
+	json,err := json.Marshal(item)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("Query(SET): "+ string(json))
 }
 
 func Del(key string) {
@@ -75,4 +82,5 @@ func Del(key string) {
 	for _, item := range parsed {
 		Set(item)
 	}
+	fmt.Println("Query(DELETE): "+ key)
 }
