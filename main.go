@@ -42,6 +42,8 @@ func main() {
 			panic(err)
 		}
 		f.WriteString("")
+	} else if _,stat := util.Find(args, "--docker"); stat == true {
+		client.Serve("9090")
 	} else {
 		fmt.Println("Help:")
 		fmt.Println("\t- serve: Starts server server on port 9090 by default.")
