@@ -44,8 +44,14 @@ func main() {
 		f.WriteString("")
 	} else if _,stat := util.Find(args, "--docker"); stat == true {
 		fmt.Println("Server running on port 5000")
-		starter := exec.Command("sudo","docker","run","-p", "5000:9090", "--mount","source=zi-presist,target=/app","vitecoin/zi")
-		starter.Run()
+		if _,stat := util.Find(args, "--detached"); stat == true {
+			starter := exec.Command("sudo","docker","run","-p", "5000:9090","-d", "--mount","source=zi-presist,target=/app","f6b91aecb470")
+			starter.Run()
+
+		} else {
+			starter := exec.Command("sudo","docker","run","-p", "5000:9090", "--mount","source=zi-presist,target=/app","f6b91aecb470")
+			starter.Run()
+		}
 	} else {
 		fmt.Println("Help:")
 		fmt.Println("\t- serve: Starts server server on port 9090 by default.")
