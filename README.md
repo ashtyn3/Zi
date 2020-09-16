@@ -39,7 +39,7 @@ zi serve 5000
 
 This will serve the server on port 5000.
 
-You can add the `--background` flag to run the server as a daemon proccess.
+You can add the `--background` flag to run the server as a daemon process.
 
 ```bash
 zi serve 3000 --background
