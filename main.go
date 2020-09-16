@@ -44,7 +44,12 @@ func main() {
 		f.WriteString("")
 	} else {
 		fmt.Println("Help:")
-		fmt.Println("\t- Serve: Serve server on port 9090 by default.")
+		fmt.Println("\t- serve: Starts server server on port 9090 by default.")
+		fmt.Println("\t  --background: Placed at the end of serve will run server as a daemon proccess.")
+		fmt.Println("\t- init: Creates dump.zi file.")
 	}
-
+// TODO: Add background server killing flag.
+// Use the following exec:
+// ps -ef | grep zi
+// kill [pid]
 }
