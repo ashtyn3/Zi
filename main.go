@@ -5,10 +5,14 @@ import (
 	// "math/rand"
 	"zi/util"
 	// "strconv"
+	"io/ioutil"
+	"strings"
 	"fmt"
 	"os/exec"
 	"os"
 	"github.com/common-nighthawk/go-figure"
+	"zi/lang"
+	"log"
 )
 
 func main() {
@@ -51,6 +55,23 @@ func main() {
 		} else {
 			starter := exec.Command("sudo","docker","run","-p", "5000:9090", "--mount","source=zi-presist,target=/app","vitecoin/zi")
 			starter.Run()
+		}
+	} else if index,stat := util.Find(args, "--run"); stat == true {
+		if index + 1 <= len(args) - 1 {
+			if args[index + 1] != "" {
+				filename := args[index + 1]
+				content,err := ioutil.ReadFile(filename)
+				if err != nil {
+					log.Fatal(err)
+				}
+				file := string(content)
+				broken := strings.Split(file, "\n")
+				lang.Do(broken)
+			} else {
+				fmt.Println("Error: Bad filename.")
+			}
+		} else {
+			fmt.Println("Error: Bad filename.")
 		}
 	} else {
 		fmt.Println("Help:")
