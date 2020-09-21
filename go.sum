@@ -1,2 +1,12 @@
+github.com/Knetic/govaluate v1.5.0 h1:L4MyqdJSld9xr2eZcZHCWLfeIX2SBjqrwIKG1pcm/+4=
+github.com/Knetic/govaluate v3.0.0+incompatible h1:7o6+MAPhYTCF0+fdvoz1xDedhRb4f6s9Tn1Tt7/WTEg=
+github.com/Knetic/govaluate v3.0.0+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=
+github.com/apaxa-go/eval v0.0.0-20171223182326-1d18b251d679 h1:iTmI8Fqjh2VU/hADCC/Nq9pvDCHCK2UNh0KfERvnkIM=
+github.com/apaxa-go/eval v0.0.0-20171223182326-1d18b251d679/go.mod h1:yCWGQBpTUzqKEfPFn43j9Spr7GLwB8ytxK4Q0tPuZ7g=
+github.com/apaxa-go/helper v0.0.0-20180607175117-61d31b1c31c3 h1:badF2fxl2BsWu2f01OYRU9cNnbrOSoOlayijH7r9ip4=
+github.com/apaxa-go/helper v0.0.0-20180607175117-61d31b1c31c3/go.mod h1:42ENZ1Wd+1+1pgQWSQ/naAWaaP/uKw1zmnrMzBBNyTQ=
 github.com/common-nighthawk/go-figure v0.0.0-20200609044655-c4b36f998cf2 h1:tjT4Jp4gxECvsJcYpAMtW2I3YqzBTPuB67OejxXs86s=
 github.com/common-nighthawk/go-figure v0.0.0-20200609044655-c4b36f998cf2/go.mod h1:mk5IQ+Y0ZeO87b858TlA645sVcEcbiX6YqP98kt+7+w=
+golang.org/x/text v0.3.3 h1:cokOdA+Jmi5PJGXLlLllQSgYigAEfHXJAERHVMaCc2k=
+golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
