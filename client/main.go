@@ -1,18 +1,20 @@
 package client
 
-import(
+import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
-	"encoding/json"
-	"zi/api"
-	"fmt"
 	"strconv"
+	"zi/api"
 )
+
 type request struct {
-	Key string `json:"key"`
+	Key   string `json:"key"`
 	Value string `json:"value"`
-	Line string `json:"line"`
+	Line  string `json:"line"`
 }
+
 func get(w http.ResponseWriter, r *http.Request) {
 	K, ok := r.URL.Query()["key"]
 	if ok != true {
@@ -28,19 +30,21 @@ func get(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
 type SetPair struct {
 	Value string `json:"Value"`
-	Key string `json:"Key"`
+	Key   string `json:"Key"`
 }
+
 func set(w http.ResponseWriter, r *http.Request) {
 	K, ok := r.URL.Query()["data"]
 	if ok != true {
 		w.Write([]byte("Data not found"))
 	} else {
 		s := string(K[0])
-    	data := SetPair{}
-    	json.Unmarshal([]byte(s), &data)
-		api.Set(api.Pair{Key: data.Key, Value: data.Value})
+		data := SetPair{}
+		json.Unmarshal([]byte(s), &data)
+		api.Set(api.Pair{Key: data.Key, Value: data.Value}, true)
 		parsed := api.Init()
 		get := api.Get(parsed, data.Key)
 		json, err := json.Marshal(api.Pair{Line: get.Line, Value: get.Value, Key: get.Key})
@@ -58,12 +62,16 @@ func del(w http.ResponseWriter, r *http.Request) {
 		api.Del(K[0])
 	}
 }
+func getAll(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(api.GetAll()))
+}
 func Serve(port string) {
-	fmt.Println("Server running on port "+ port)
-	http.HandleFunc("/get",get)
-	http.HandleFunc("/set",set)
-	http.HandleFunc("/del",del)
-	err := http.ListenAndServe(":" +port, nil)
+	fmt.Println("Server running on port " + port)
+	http.HandleFunc("/get", get)
+	http.HandleFunc("/set", set)
+	http.HandleFunc("/del", del)
+	http.HandleFunc("/getall", getAll)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
