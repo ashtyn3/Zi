@@ -2,9 +2,11 @@ package main
 
 import (
 	"zi/client"
+
 	// "math/rand"
 	"zi/util"
 	// "strconv"
+
 	"fmt"
 	"os"
 	"os/exec"
@@ -67,4 +69,18 @@ func main() {
 	// Use the following exec:
 	// ps -ef | grep zi
 	// kill [pid]
+	// a very very very very secret key
+
+	// key := []byte("a very very very very secret key") // 32 bytes
+	// plaintext := []byte("some really really really long plaintext\nwow boom")
+	// fmt.Printf("%s\n", plaintext)
+	// ciphertext, err := cto.Encrypt(key, plaintext)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(hex.EncodeToString(ciphertext))
+	// result, err := cto.Decrypt(key, ciphertext)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 }

@@ -10,6 +10,7 @@ import (
 
 	// "zi/util"
 	"net/http"
+	cto "zi/crypto"
 	// "strconv"
 )
 
@@ -21,13 +22,15 @@ type Pair struct {
 
 func Init() []Pair {
 	list := []Pair{}
-	content, err := ioutil.ReadFile("dump.zi")
+	b64v, err := ioutil.ReadFile("dump.zi")
+	content := string(b64v)
 	if err != nil {
 		log.Fatal(err)
 	}
-	file := string(content)
+	file := content
 	broken := strings.Split(file, "\n")
 	for i, item := range broken {
+		item = cto.B64_dec(item)
 		var trimmed string
 		if strings.Trim(item, trimmed) != "" {
 			var line string = item
@@ -72,7 +75,7 @@ func Set(item Pair, verbose bool) {
 		log.Println(err)
 	}
 	defer f.Close()
-	if _, err := f.WriteString("\n" + item.Key + " " + item.Value); err != nil {
+	if _, err := f.WriteString("\n" + cto.B64_enc(item.Key+" "+item.Value)); err != nil {
 		log.Println(err)
 	}
 	json, err := json.Marshal(item)
