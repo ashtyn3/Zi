@@ -121,4 +121,5 @@ func Bind(title, url string) {
 	json.Unmarshal([]byte(data), &built)
 	r, _ := json.Marshal(built)
 	Set(Pair{Value: string(r), Key: "*" + title}, false)
+	fmt.Println("Action(BIND): " + title + ":" + url)
 }

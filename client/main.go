@@ -65,12 +65,23 @@ func del(w http.ResponseWriter, r *http.Request) {
 func getAll(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(api.GetAll()))
 }
+func bind(w http.ResponseWriter, r *http.Request) {
+	url, okUrl := r.URL.Query()["url"]
+	key, okKey := r.URL.Query()["key"]
+	if okUrl == true && okKey == true {
+		api.Bind(key[0], url[0])
+	} else {
+		w.Write([]byte("Key or url not found"))
+	}
+}
 func Serve(port string) {
 	fmt.Println("Server running on port " + port)
 	http.HandleFunc("/get", get)
 	http.HandleFunc("/set", set)
 	http.HandleFunc("/del", del)
 	http.HandleFunc("/getall", getAll)
+	http.HandleFunc("/bind", bind)
+
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
