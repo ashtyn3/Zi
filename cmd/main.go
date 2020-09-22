@@ -66,7 +66,7 @@ func Do() {
 				CLEAR()
 				CallClear()
 			} else if parsed[0] == "bind" {
-				api.Bind(parsed[1])
+				api.Bind(parsed[1], parsed[2])
 			} else {
 				fmt.Println("ERROR: Bad command " + line)
 			}

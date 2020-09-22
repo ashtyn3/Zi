@@ -43,12 +43,26 @@ func Init() []Pair {
 
 func Get(data []Pair, key string) Pair {
 	fmt.Println("Query(GET): " + key)
-	for _, item := range data {
-		if item.Key == key {
-			return item
+	if strings.Contains(key, "*") == true {
+		key = strings.Replace(key, "*", "", 1)
+		entry := strings.Split(key, ":")
+		for _, item := range data {
+			if item.Key == "*"+entry[0] {
+				var binded []Pair
+				json.Unmarshal([]byte(item.Value), &binded)
+				return Get(binded, entry[1])
+				// return item
+			}
+		}
+	} else {
+		for _, item := range data {
+			if item.Key == key {
+				return item
+			}
 		}
 	}
 	return Pair{Key: "", Value: "", Line: 0}
+
 }
 
 func Set(item Pair, verbose bool) {
@@ -96,9 +110,8 @@ func GetAll() string {
 	return string(json)
 }
 
-func Bind(url string) {
+func Bind(title, url string) {
 	res, err := http.Get(url + "/getall")
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -106,5 +119,6 @@ func Bind(url string) {
 	res.Body.Close()
 	var built []Pair
 	json.Unmarshal([]byte(data), &built)
-	fmt.Println(built)
+	r, _ := json.Marshal(built)
+	Set(Pair{Value: string(r), Key: "*" + title}, false)
 }
