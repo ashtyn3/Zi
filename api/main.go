@@ -5,13 +5,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"strings"
-
-	// "zi/util"
-	"net/http"
 	cto "zi/crypto"
-	// "strconv"
 )
 
 type Pair struct {

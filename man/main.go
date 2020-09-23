@@ -56,7 +56,7 @@ func main() {
 			starter := exec.Command("sudo", "docker", "run", "-p", "5000:9090", "--mount", "source=zi-presist,target=/app", "vitecoin/zi")
 			starter.Run()
 		}
-	} else if _, stat := util.Find(args, "--run"); stat == true {
+	} else if _, stat := util.Find(args, "run"); stat == true {
 		cmd.Do()
 	} else {
 		fmt.Println("Help:")
