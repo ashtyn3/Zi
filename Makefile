@@ -1,2 +1,2 @@
 build:
-	cd cmd/zi && go build -o ../../bin/
+	cd man/zi && go build -o ../../bin/
