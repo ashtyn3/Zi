@@ -1,9 +1,9 @@
 #!/bin/bash
 
 echo "Builing zi"
-go build
+make
 echo "Installing zi"
-sudo mv zi /usr/bin
+sudo mv bin/zi /usr/bin
 wget https://github.com/fiorix/go-daemon/releases/download/v1.3/go-daemon_1.3_amd64.deb
 sudo apt install ./go-daemon_1.3_amd64.deb
 rm ./go-daemon_1.3_amd64.deb

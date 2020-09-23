@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
@@ -57,9 +58,20 @@ func Do() {
 				}
 
 			} else if parsed[0] == "GET" {
-				p := api.Init()
-				data, _ := json.Marshal(api.Get(p, parsed[1]))
-				fmt.Println(string(data))
+				if parsed[1] == "*" {
+					var strJson []api.Pair
+					json.Unmarshal([]byte(api.GetAll()), &strJson)
+					data, err := json.MarshalIndent(strJson, "", "  ")
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					fmt.Println(string(data))
+				} else {
+					p := api.Init()
+					data, _ := json.Marshal(api.Get(p, parsed[1]))
+					fmt.Println(string(data))
+				}
 			} else if parsed[0] == "DEL" {
 				api.Del(parsed[1])
 			} else if parsed[0] == "clear" {
