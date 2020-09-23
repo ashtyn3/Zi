@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	cmd "zi/cli"
+	cmd "zi/command"
 
 	"github.com/common-nighthawk/go-figure"
 )
