@@ -3,8 +3,10 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"zi/api"
 )
@@ -75,6 +77,9 @@ func bind(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func Serve(port string) {
+	if _, err := os.Stat("dump.zi"); err != nil {
+		ioutil.WriteFile("dump.zi", []byte(""), 0644)
+	}
 	fmt.Println("Server running on port " + port)
 	http.HandleFunc("/get", get)
 	http.HandleFunc("/set", set)
