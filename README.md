@@ -143,4 +143,4 @@ This will delete all instances of that key.
 
 ## Binding Data
 
-Two databases can binded or connected together using the bind action. Binding takes a key, which references another database it will use the data from the other database and store as the value of that key.
+Two databases can binded or connected together using the bind action. Binding takes a key, which references another database it will use the data from the other database every time you make a query to that key.

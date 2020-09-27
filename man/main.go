@@ -64,6 +64,7 @@ func main() {
 		fmt.Println("\t  --background: Placed at the end of serve will run server as a daemon proccess.")
 		fmt.Println("\t  --docker: Uses perfered flags to start docker container. Container MUST be installed")
 		fmt.Println("\t- init: Creates dump.zi file.")
+		fmt.Println("\t- run: Opens a CLI for running queries directly.")
 	}
 	// TODO: Add background server killing flag.
 	// Use the following exec:
