@@ -77,12 +77,12 @@ func Do() {
 						fmt.Println(string(data))
 					}
 				} else if parsed[0] == "DEL" {
-					api.Del(parsed[1])
+					api.Del(parsed[1], true)
 				} else if parsed[0] == "clear" {
 					CLEAR()
 					CallClear()
 				} else if parsed[0] == "bind" {
-					api.Bind(parsed[1], parsed[2])
+					api.Bind(parsed[1], parsed[2], true)
 				} else {
 					fmt.Println("ERROR: Bad command " + line)
 				}

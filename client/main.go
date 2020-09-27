@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
@@ -61,7 +62,7 @@ func del(w http.ResponseWriter, r *http.Request) {
 	if ok != true {
 		w.Write([]byte("Key not found"))
 	} else {
-		api.Del(K[0])
+		api.Del(K[0], true)
 	}
 }
 func getAll(w http.ResponseWriter, r *http.Request) {
@@ -71,24 +72,37 @@ func bind(w http.ResponseWriter, r *http.Request) {
 	url, okUrl := r.URL.Query()["url"]
 	key, okKey := r.URL.Query()["key"]
 	if okUrl == true && okKey == true {
-		api.Bind(key[0], url[0])
+		api.Bind(key[0], url[0], true)
 	} else {
 		w.Write([]byte("Key or url not found"))
 	}
 }
+func getOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+	return localAddr.IP
+}
+
 func Serve(port string) {
 	if _, err := os.Stat("dump.zi"); err != nil {
 		ioutil.WriteFile("dump.zi", []byte(""), 0644)
 	}
 	fmt.Println("Server running on port " + port)
+	fmt.Printf("Public address: http://%s:%s\n", getOutboundIP(), port)
+	fmt.Printf("Localhost address: http://127.0.0.1:%s\n", port)
 	http.HandleFunc("/get", get)
 	http.HandleFunc("/set", set)
 	http.HandleFunc("/del", del)
 	http.HandleFunc("/getall", getAll)
 	http.HandleFunc("/bind", bind)
-
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	http.ListenAndServe(":"+port, nil)
+	// if err != nil {
+	// log.Fatal(err)
+	// }
 }

@@ -48,9 +48,15 @@ func Get(data []Pair, key string) Pair {
 		entry := strings.Split(key, ":")
 		for _, item := range data {
 			if item.Key == "*"+entry[0] {
-				var binded []Pair
-				json.Unmarshal([]byte(item.Value), &binded)
-				return Get(binded, entry[1])
+				res, err := http.Get(item.Value + "/getall")
+				if err != nil {
+					log.Fatal(err)
+				}
+				data, _ := ioutil.ReadAll(res.Body)
+				res.Body.Close()
+				var built []Pair
+				json.Unmarshal(data, &built)
+				return Get(built, entry[1])
 				// return item
 			}
 		}
@@ -84,7 +90,7 @@ func Set(item Pair, verbose bool) {
 	}
 }
 
-func Del(key string) {
+func Del(key string, print bool) {
 	parsed := Init()
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i].Key == key {
@@ -100,7 +106,10 @@ func Del(key string) {
 	for _, item := range parsed {
 		Set(item, false)
 	}
-	fmt.Println("Query(DELETE): " + key)
+	if print == true {
+		fmt.Println("Query(DELETE): " + key)
+
+	}
 }
 
 func GetAll() string {
@@ -110,7 +119,7 @@ func GetAll() string {
 	return string(json)
 }
 
-func Bind(title, url string) {
+func Bind(title, url string, print bool) {
 	res, err := http.Get(url + "/getall")
 	if err != nil {
 		log.Fatal(err)
@@ -120,6 +129,10 @@ func Bind(title, url string) {
 	var built []Pair
 	json.Unmarshal([]byte(data), &built)
 	r, _ := json.Marshal(built)
-	Set(Pair{Value: string(r), Key: "*" + title}, false)
-	fmt.Println("Action(BIND): " + title + ":" + url)
+	if string(r) != "[]" {
+		Set(Pair{Value: url, Key: "*" + title}, false)
+	}
+	if print == true {
+		fmt.Println("Action(BIND): " + title + ":" + url)
+	}
 }
