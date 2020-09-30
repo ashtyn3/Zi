@@ -19,6 +19,8 @@ type request struct {
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+
 	K, ok := r.URL.Query()["key"]
 	if ok != true {
 		w.Write([]byte("key not found"))
@@ -40,6 +42,8 @@ type SetPair struct {
 }
 
 func set(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+
 	K, ok := r.URL.Query()["data"]
 	if ok != true {
 		w.Write([]byte("Data not found"))
@@ -58,6 +62,7 @@ func set(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func del(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	K, ok := r.URL.Query()["key"]
 	if ok != true {
 		w.Write([]byte("Key not found"))
@@ -66,9 +71,12 @@ func del(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func getAll(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Write([]byte(api.GetAll()))
 }
 func bind(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+
 	url, okUrl := r.URL.Query()["url"]
 	key, okKey := r.URL.Query()["key"]
 	if okUrl == true && okKey == true {
