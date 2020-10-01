@@ -68,6 +68,7 @@ func del(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Key not found"))
 	} else {
 		api.Del(K[0], true)
+		w.Write([]byte("OK"))
 	}
 }
 func getAll(w http.ResponseWriter, r *http.Request) {
@@ -81,8 +82,22 @@ func bind(w http.ResponseWriter, r *http.Request) {
 	key, okKey := r.URL.Query()["key"]
 	if okUrl == true && okKey == true {
 		api.Bind(key[0], url[0], true)
+		w.Write([]byte("OK"))
 	} else {
 		w.Write([]byte("Key or url not found"))
+	}
+}
+func rename(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+
+	new, okUrl := r.URL.Query()["new"]
+	origin, okKey := r.URL.Query()["origin"]
+	if okUrl == true && okKey == true {
+		api.Rename(origin[0], new[0], true)
+		w.Write([]byte("OK"))
+
+	} else {
+		w.Write([]byte("New or origin not found"))
 	}
 }
 func getOutboundIP() net.IP {
@@ -109,6 +124,8 @@ func Serve(port string) {
 	http.HandleFunc("/del", del)
 	http.HandleFunc("/getall", getAll)
 	http.HandleFunc("/bind", bind)
+	http.HandleFunc("/rename", rename)
+
 	http.ListenAndServe(":"+port, nil)
 	// if err != nil {
 	// log.Fatal(err)
