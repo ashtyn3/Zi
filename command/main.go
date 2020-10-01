@@ -87,6 +87,8 @@ func Do() {
 					p := api.Init()
 					data, _ := json.Marshal(api.GetRow(p, parsed[1]))
 					fmt.Println(string(data))
+				} else if parsed[0] == "RENAME" {
+					api.Rename(parsed[1], parsed[2], true)
 				} else {
 					fmt.Println("ERROR: Bad command " + line)
 				}

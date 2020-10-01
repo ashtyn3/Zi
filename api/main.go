@@ -58,7 +58,7 @@ func Get(data []Pair, key string, print bool) Pair {
 				res.Body.Close()
 				var built []Pair
 				json.Unmarshal(data, &built)
-				return Get(built, entry[1])
+				return Get(built, entry[1], true)
 				// return item
 			}
 		}
@@ -146,5 +146,14 @@ func Bind(title, url string, print bool) {
 	}
 	if print == true {
 		fmt.Println("Action(BIND): " + title + ":" + url)
+	}
+}
+
+func Rename(origin string, new string, print bool) {
+	d := Get(Init(), origin, false)
+	Del(origin, false)
+	Set(Pair{Key: new, Value: d.Value}, false)
+	if print == true {
+		fmt.Println("Query(RENAME): " + origin + " to " + new)
 	}
 }
