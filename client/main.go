@@ -26,7 +26,7 @@ func get(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("key not found"))
 	} else {
 		parsed := api.Init()
-		data := api.Get(parsed, K[0])
+		data := api.Get(parsed, K[0], true)
 		Json, err := json.Marshal(request{Key: data.Key, Value: data.Value, Line: strconv.Itoa(data.Line)})
 		if err != nil {
 			log.Fatal(err)
@@ -53,7 +53,7 @@ func set(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal([]byte(s), &data)
 		api.Set(api.Pair{Key: data.Key, Value: data.Value}, true)
 		parsed := api.Init()
-		get := api.Get(parsed, data.Key)
+		get := api.Get(parsed, data.Key, true)
 		json, err := json.Marshal(api.Pair{Line: get.Line, Value: get.Value, Key: get.Key})
 		if err != nil {
 			panic(err)

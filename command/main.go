@@ -73,7 +73,7 @@ func Do() {
 						fmt.Println(string(data))
 					} else {
 						p := api.Init()
-						data, _ := json.Marshal(api.Get(p, parsed[1]))
+						data, _ := json.Marshal(api.Get(p, parsed[1], true))
 						fmt.Println(string(data))
 					}
 				} else if parsed[0] == "DEL" {
@@ -83,6 +83,10 @@ func Do() {
 					CallClear()
 				} else if parsed[0] == "bind" {
 					api.Bind(parsed[1], parsed[2], true)
+				} else if parsed[0] == "GET_ROW" {
+					p := api.Init()
+					data, _ := json.Marshal(api.GetRow(p, parsed[1]))
+					fmt.Println(string(data))
 				} else {
 					fmt.Println("ERROR: Bad command " + line)
 				}

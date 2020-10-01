@@ -41,8 +41,10 @@ func Init() []Pair {
 	return list
 }
 
-func Get(data []Pair, key string) Pair {
-	fmt.Println("Query(GET): " + key)
+func Get(data []Pair, key string, print bool) Pair {
+	if print == true {
+		fmt.Println("Query(GET): " + key)
+	}
 	if strings.Contains(key, "*") == true {
 		key = strings.Replace(key, "*", "", 1)
 		entry := strings.Split(key, ":")
@@ -61,16 +63,26 @@ func Get(data []Pair, key string) Pair {
 			}
 		}
 	} else {
+		matched := []Pair{}
 		for _, item := range data {
 			if item.Key == key {
-				return item
+				matched = append(matched, item)
 			}
 		}
+		return matched[len(matched)-1]
 	}
 	return Pair{Key: "", Value: "", Line: 0}
 
 }
-
+func GetRow(data []Pair, key string) []Pair {
+	matched := []Pair{}
+	for _, item := range data {
+		if item.Key == key {
+			matched = append(matched, item)
+		}
+	}
+	return matched
+}
 func Set(item Pair, verbose bool) {
 	f, err := os.OpenFile("dump.zi",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
