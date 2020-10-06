@@ -1,4 +1,4 @@
-module zi
+module github.com/vitecoin/zi
 
 go 1.15
 
