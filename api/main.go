@@ -69,7 +69,9 @@ func Get(data []Pair, key string, print bool) Pair {
 				matched = append(matched, item)
 			}
 		}
-		return matched[len(matched)-1]
+		if len(matched) != 0 {
+			return matched[len(matched)-1]
+		}
 	}
 	return Pair{Key: "", Value: "", Line: 0}
 

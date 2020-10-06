@@ -53,7 +53,7 @@ func set(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal([]byte(s), &data)
 		api.Set(api.Pair{Key: data.Key, Value: data.Value}, true)
 		parsed := api.Init()
-		get := api.Get(parsed, data.Key, true)
+		get := api.Get(parsed, data.Key, false)
 		json, err := json.Marshal(api.Pair{Line: get.Line, Value: get.Value, Key: get.Key})
 		if err != nil {
 			panic(err)
