@@ -111,7 +111,11 @@ func getOutboundIP() net.IP {
 
 	return localAddr.IP
 }
+func root(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
+}
 
+// Serve starts database server.
 func Serve(port string) {
 	if _, err := os.Stat("dump.zi"); err != nil {
 		ioutil.WriteFile("dump.zi", []byte(""), 0644)
@@ -125,7 +129,7 @@ func Serve(port string) {
 	http.HandleFunc("/getall", getAll)
 	http.HandleFunc("/bind", bind)
 	http.HandleFunc("/rename", rename)
-
+	http.HandleFunc("/", root)
 	http.ListenAndServe(":"+port, nil)
 	// if err != nil {
 	// log.Fatal(err)
