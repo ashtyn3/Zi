@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	cto "zi/crypto"
+
+	cto "github.com/vitecoin/zi/crypto"
 )
 
 type Pair struct {

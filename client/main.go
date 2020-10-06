@@ -9,7 +9,8 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"zi/api"
+
+	"github.com/vitecoin/zi/api"
 )
 
 type request struct {

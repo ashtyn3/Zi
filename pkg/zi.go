@@ -7,7 +7,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"zi/api"
+
+	"github.com/vitecoin/zi/api"
 )
 
 var url string

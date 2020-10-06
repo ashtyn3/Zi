@@ -9,7 +9,8 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
-	"zi/api"
+
+	"github.com/vitecoin/zi/api"
 )
 
 var clear map[string]func() //create a map for storing clear funcs
