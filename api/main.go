@@ -33,10 +33,14 @@ func Init() []Pair {
 		if strings.Trim(item, trimmed) != "" {
 			var line string = item
 			parsed := strings.Fields(line)
-			k := parsed[0]
-			v := strings.Join(parsed[1:], " ")
-			fullPair := Pair{Key: k, Value: v, Line: i + 1}
-			list = append(list, fullPair)
+			if len(parsed) != 0 {
+
+				k := parsed[0]
+				v := strings.Join(parsed[1:], " ")
+				fullPair := Pair{Key: k, Value: v, Line: i + 1}
+				list = append(list, fullPair)
+			}
+
 		}
 	}
 	return list
@@ -77,6 +81,8 @@ func Get(data []Pair, key string, print bool) Pair {
 	return Pair{Key: "", Value: "", Line: 0}
 
 }
+
+// GetRow gets every version of key
 func GetRow(data []Pair, key string) []Pair {
 	matched := []Pair{}
 	for _, item := range data {
@@ -84,8 +90,10 @@ func GetRow(data []Pair, key string) []Pair {
 			matched = append(matched, item)
 		}
 	}
+	fmt.Println("Query(GET): " + key)
 	return matched
 }
+
 func Set(item Pair, verbose bool) {
 	f, err := os.OpenFile("dump.zi",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

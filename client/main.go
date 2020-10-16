@@ -21,7 +21,6 @@ type request struct {
 
 func get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
-
 	K, ok := r.URL.Query()["key"]
 	if ok != true {
 		w.Write([]byte("key not found"))
@@ -101,6 +100,17 @@ func rename(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("New or origin not found"))
 	}
 }
+func getrow(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	key, ok := r.URL.Query()["key"]
+	if ok == false {
+		w.Write([]byte("Key not found"))
+	} else {
+		r := api.GetRow(api.Init(), key[0])
+		data, _ := json.Marshal(r)
+		w.Write([]byte(data))
+	}
+}
 func getOutboundIP() net.IP {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
@@ -112,6 +122,7 @@ func getOutboundIP() net.IP {
 
 	return localAddr.IP
 }
+
 func root(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
 }
@@ -127,6 +138,7 @@ func Serve(port string) {
 	http.HandleFunc("/get", get)
 	http.HandleFunc("/set", set)
 	http.HandleFunc("/del", del)
+	http.HandleFunc("/getrow", getrow)
 	http.HandleFunc("/getall", getAll)
 	http.HandleFunc("/bind", bind)
 	http.HandleFunc("/rename", rename)
