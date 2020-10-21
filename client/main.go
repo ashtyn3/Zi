@@ -67,7 +67,7 @@ func dump(w http.ResponseWriter, r *http.Request) {
 	if ok != true || okP != true {
 		w.Write([]byte("Data or path not found"))
 	} else {
-		s := "+" + string(K[0])
+		s := K[0]
 		data := SetPair{}
 		json.Unmarshal([]byte(s), &data)
 		api.Dump(data.Key, data.Value, P[0], true)
