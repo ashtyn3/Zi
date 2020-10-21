@@ -20,6 +20,7 @@ type del func(string) string
 type rename func(old string, new string) string
 type getAll func() []api.Pair
 type getRow func(string) []api.Pair
+type dump func(api.Pair, string) string
 
 // ZI is main struct interface
 type ZI struct {
@@ -29,6 +30,7 @@ type ZI struct {
 	Rename rename
 	GetAll getAll
 	GetRow getRow
+	Dump   dump
 }
 
 var ziGoodReturn = ZI{Get: func(key string) api.Pair {
@@ -108,6 +110,15 @@ var ziGoodReturn = ZI{Get: func(key string) api.Pair {
 	r := []api.Pair{}
 	json.Unmarshal([]byte(body), &r)
 	return r
+}, Dump: func(kv api.Pair, p string) string {
+	j, _ := json.Marshal(kv)
+	u := url + "/dump?data=" + string(j) + "&path=" + p
+	data, err := http.Get(u)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer data.Body.Close()
+	return "OK"
 }}
 
 // Zi is the main function for the Zi go library.
