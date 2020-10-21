@@ -213,7 +213,7 @@ func Dump(k, v, path string, print bool) {
 		fmt.Println(err)
 	}
 	f.WriteString("\n" + cto.B64_enc(k+" "+v))
-	Set(Pair{Key: "+" + k, Value: path}, false)
+	Set(Pair{Key: k, Value: path}, false)
 	if print == true {
 		fmt.Println("Query(DUMP): " + "+" + k + ":" + path)
 	}
