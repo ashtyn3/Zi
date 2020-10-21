@@ -92,7 +92,7 @@ func Get(data []Pair, key string, print bool) Pair {
 	} else if strings.HasPrefix(key, "+") == true {
 		var found []Pair
 		for _, item := range data {
-			if item.Key == key {
+			if item.Key == strings.Replace(key, "+", "", 1) {
 				f, err := ioutil.ReadFile(item.Value)
 				if err != nil {
 					log.Fatal(err)
