@@ -90,6 +90,8 @@ func Do() {
 					fmt.Println(string(data))
 				} else if parsed[0] == "RENAME" {
 					api.Rename(parsed[1], parsed[2], true)
+				} else if parsed[0] == "DUMP" {
+					api.Dump(parsed[2], strings.Join(parsed[3:], " "), parsed[1], true)
 				} else {
 					fmt.Println("ERROR: Bad command " + line)
 				}

@@ -43,7 +43,6 @@ type SetPair struct {
 
 func set(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
-
 	K, ok := r.URL.Query()["data"]
 	if ok != true {
 		w.Write([]byte("Data not found"))
@@ -59,6 +58,20 @@ func set(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		w.Write([]byte(string(json)))
+	}
+}
+func dump(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	K, ok := r.URL.Query()["data"]
+	P, okP := r.URL.Query()["path"]
+	if ok != true || okP != true {
+		w.Write([]byte("Data or path not found"))
+	} else {
+		s := "+" + string(K[0])
+		data := SetPair{}
+		json.Unmarshal([]byte(s), &data)
+		api.Dump(data.Key, data.Value, P[0], true)
+		w.Write([]byte("OK"))
 	}
 }
 func del(w http.ResponseWriter, r *http.Request) {
@@ -142,6 +155,7 @@ func Serve(port string) {
 	http.HandleFunc("/getall", getAll)
 	http.HandleFunc("/bind", bind)
 	http.HandleFunc("/rename", rename)
+	http.HandleFunc("/dump", dump)
 	http.HandleFunc("/", root)
 	http.ListenAndServe(":"+port, nil)
 	// if err != nil {

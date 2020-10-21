@@ -46,6 +46,28 @@ func Init() []Pair {
 	return list
 }
 
+func ModInit(content string) []Pair {
+	list := []Pair{}
+	broken := strings.Split(content, "\n")
+	for i, item := range broken {
+		item = cto.B64_dec(item)
+		var trimmed string
+		if strings.Trim(item, trimmed) != "" {
+			var line string = item
+			parsed := strings.Fields(line)
+			if len(parsed) != 0 {
+
+				k := parsed[0]
+				v := strings.Join(parsed[1:], " ")
+				fullPair := Pair{Key: k, Value: v, Line: i + 1}
+				list = append(list, fullPair)
+			}
+
+		}
+	}
+	return list
+}
+
 func Get(data []Pair, key string, print bool) Pair {
 	if print == true {
 		fmt.Println("Query(GET): " + key)
@@ -67,6 +89,22 @@ func Get(data []Pair, key string, print bool) Pair {
 				// return item
 			}
 		}
+	} else if strings.HasPrefix(key, "+") == true {
+		var found []Pair
+		for _, item := range data {
+			if item.Key == key {
+				f, err := ioutil.ReadFile(item.Value)
+				if err != nil {
+					log.Fatal(err)
+				}
+				parsed := ModInit(string(f))
+				for _, v := range parsed {
+					found = append(found, v)
+				}
+			}
+		}
+		sj, _ := json.Marshal(found)
+		return Pair{Key: strings.Replace(key, "+", "", 1), Value: string(sj)}
 	} else {
 		matched := []Pair{}
 		for _, item := range data {
@@ -166,5 +204,17 @@ func Rename(origin string, new string, print bool) {
 	Set(Pair{Key: new, Value: d.Value}, false)
 	if print == true {
 		fmt.Println("Query(RENAME): " + origin + " to " + new)
+	}
+}
+
+func Dump(k, v, path string, print bool) {
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+	f.WriteString("\n" + cto.B64_enc(k+" "+v))
+	Set(Pair{Key: "+" + k, Value: path}, false)
+	if print == true {
+		fmt.Println("Query(DUMP): " + "+" + k + ":" + path)
 	}
 }
