@@ -1,14 +1,12 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/vitecoin/zi/api"
 )
@@ -20,20 +18,22 @@ type request struct {
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	K, ok := r.URL.Query()["key"]
-	if ok != true {
-		w.Write([]byte("key not found"))
-	} else {
-		parsed := api.Init()
-		data := api.Get(parsed, K[0], true)
-		Json, err := json.Marshal(request{Key: data.Key, Value: data.Value, Line: strconv.Itoa(data.Line)})
-		if err != nil {
-			log.Fatal(err)
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				getQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
 		}
-		w.Write([]byte(string(Json)))
+	} else {
+		getQuery(w, r)
 	}
-
 }
 
 type SetPair struct {
@@ -42,86 +42,129 @@ type SetPair struct {
 }
 
 func set(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	K, ok := r.URL.Query()["data"]
-	if ok != true {
-		w.Write([]byte("Data not found"))
-	} else {
-		s := string(K[0])
-		data := SetPair{}
-		json.Unmarshal([]byte(s), &data)
-		api.Set(api.Pair{Key: data.Key, Value: data.Value}, true)
-		parsed := api.Init()
-		get := api.Get(parsed, data.Key, false)
-		json, err := json.Marshal(api.Pair{Line: get.Line, Value: get.Value, Key: get.Key})
-		if err != nil {
-			panic(err)
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				setQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
 		}
-		w.Write([]byte(string(json)))
+	} else {
+		setQuery(w, r)
 	}
 }
 func dump(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	K, ok := r.URL.Query()["data"]
-	P, okP := r.URL.Query()["path"]
-	if ok != true || okP != true {
-		w.Write([]byte("Data or path not found"))
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				dumpQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
 	} else {
-		s := K[0]
-		data := SetPair{}
-		json.Unmarshal([]byte(s), &data)
-		api.Dump(data.Key, data.Value, P[0], true)
-		w.Write([]byte("OK"))
+		dumpQuery(w, r)
 	}
 }
 func del(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	K, ok := r.URL.Query()["key"]
-	if ok != true {
-		w.Write([]byte("Key not found"))
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				delQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
 	} else {
-		api.Del(K[0], true)
-		w.Write([]byte("OK"))
+		delQuery(w, r)
 	}
 }
 func getAll(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Write([]byte(api.GetAll()))
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				getAllQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
+	} else {
+		getAllQuery(w, r)
+	}
 }
 func bind(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-
-	url, okUrl := r.URL.Query()["url"]
-	key, okKey := r.URL.Query()["key"]
-	if okUrl == true && okKey == true {
-		api.Bind(key[0], url[0], true)
-		w.Write([]byte("OK"))
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				bindQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
 	} else {
-		w.Write([]byte("Key or url not found"))
+		bindQuery(w, r)
 	}
 }
 func rename(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-
-	new, okUrl := r.URL.Query()["new"]
-	origin, okKey := r.URL.Query()["origin"]
-	if okUrl == true && okKey == true {
-		api.Rename(origin[0], new[0], true)
-		w.Write([]byte("OK"))
-
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				renameQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
 	} else {
-		w.Write([]byte("New or origin not found"))
+		renameQuery(w, r)
 	}
 }
 func getrow(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	key, ok := r.URL.Query()["key"]
-	if ok == false {
-		w.Write([]byte("Key not found"))
+	p := api.Get(api.Init(), "++pd", false)
+	if p.Value != "" {
+		pass, Pok := r.URL.Query()["auth"]
+		if Pok == true {
+			valid := api.Validate(pass[0], false)
+			if valid == "ok" {
+				getrowQuery(w, r)
+			} else {
+				w.Write([]byte("bad"))
+			}
+		} else {
+			w.Write([]byte("bad"))
+		}
 	} else {
-		r := api.GetRow(api.Init(), key[0])
-		data, _ := json.Marshal(r)
-		w.Write([]byte(data))
+		getrowQuery(w, r)
 	}
 }
 func getOutboundIP() net.IP {

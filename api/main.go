@@ -219,3 +219,19 @@ func Dump(k, v, path string, print bool) {
 		fmt.Println("Query(DUMP): " + "+" + k + ":" + path)
 	}
 }
+
+func Validate(pass string, new bool) string {
+	if new == true {
+		f, err := os.OpenFile("dump.zi", os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Println(err)
+		}
+		f.WriteAt([]byte(cto.B64_enc("++pd "+pass)), 0)
+	} else {
+		pair := Get(Init(), "++pd", false)
+		if pair.Value == pass {
+			return "ok"
+		}
+	}
+	return "bad"
+}

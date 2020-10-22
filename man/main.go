@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/vitecoin/zi/api"
 	"github.com/vitecoin/zi/client"
 
 	// "math/rand"
@@ -58,6 +59,13 @@ func main() {
 		}
 	} else if _, stat := util.Find(args, "run"); stat == true {
 		cmd.Do()
+	} else if _, stat := util.Find(args, "auth"); stat == true {
+		i, _ := util.Find(args, "auth")
+		if len(args)-1 < i+1 {
+			fmt.Println("Please provide a password.")
+		} else {
+			api.Validate(args[i+1], true)
+		}
 	} else {
 		fmt.Println("Help:")
 		fmt.Println("\t- serve: Starts server server on port 9090 by default.")
