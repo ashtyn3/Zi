@@ -89,10 +89,11 @@ func Get(data []Pair, key string, print bool) Pair {
 				// return item
 			}
 		}
-	} else if strings.HasPrefix(key, "+") == true {
+	} else if strings.HasPrefix(key, "^") == true {
 		var found []Pair
+
 		for _, item := range data {
-			if item.Key == strings.Replace(key, "+", "", 1) {
+			if item.Key == strings.Replace(key, "^", "", 1) {
 				f, err := ioutil.ReadFile(item.Value)
 				if err != nil {
 					log.Fatal(err)
@@ -104,7 +105,7 @@ func Get(data []Pair, key string, print bool) Pair {
 			}
 		}
 		sj, _ := json.Marshal(found)
-		return Pair{Key: strings.Replace(key, "+", "", 1), Value: string(sj)}
+		return Pair{Key: strings.Replace(key, "^", "", 1), Value: string(sj)}
 	} else {
 		matched := []Pair{}
 		for _, item := range data {
