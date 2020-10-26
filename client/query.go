@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -88,13 +89,21 @@ func getAllQuery(w http.ResponseWriter, r *http.Request) {
 	var unFiltered []api.Pair
 	json.Unmarshal([]byte(api.GetAll()), &unFiltered)
 	var filtered []api.Pair
-	for _, p := range filtered {
+	for _, p := range unFiltered {
 		if p.Key != "++pd" {
 			filtered = append(filtered, p)
 		}
 	}
-	result, _ := json.Marshal(filtered)
-	w.Write(result)
+	result, err := json.Marshal(filtered)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if string(result) == "null" {
+		w.Write([]byte("[]"))
+	} else {
+		w.Write(result)
+
+	}
 }
 
 func bindQuery(w http.ResponseWriter, r *http.Request) {
