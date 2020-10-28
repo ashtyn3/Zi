@@ -3,6 +3,7 @@ package zi
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -34,94 +35,6 @@ type ZI struct {
 	Dump   dump
 }
 
-var ziGoodReturn = ZI{Get: func(key string) api.Pair {
-	u := url + "/get?key=" + key + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-
-	body, err := ioutil.ReadAll(data.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	r := api.Pair{}
-	json.Unmarshal([]byte(body), &r)
-	return r
-}, Set: func(d api.Pair) api.Pair {
-	in, _ := json.Marshal(d)
-	u := url + "/set?data=" + strings.ReplaceAll(string(in), " ", "%20") + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-
-	body, err := ioutil.ReadAll(data.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	r := api.Pair{}
-	json.Unmarshal([]byte(body), &r)
-	return r
-}, Del: func(key string) string {
-	u := url + "/del?key=" + key + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-	return "OK"
-}, Rename: func(old string, new string) string {
-	u := url + "/rename?origin=" + old + "&new=" + new + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-	return "OK"
-}, GetAll: func() []api.Pair {
-	u := url + "/getall" + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-
-	body, err := ioutil.ReadAll(data.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	r := []api.Pair{}
-	json.Unmarshal([]byte(body), &r)
-	return r
-}, GetRow: func(s string) []api.Pair {
-	u := url + "/getrow?key=" + s + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-
-	body, err := ioutil.ReadAll(data.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	r := []api.Pair{}
-	json.Unmarshal([]byte(body), &r)
-	return r
-}, Dump: func(kv api.Pair, p string) string {
-	j, _ := json.Marshal(kv)
-	u := url + "/dump?data=" + string(j) + "&path=" + p + "&auth=" + auth
-	data, err := http.Get(u)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer data.Body.Close()
-	return "OK"
-}}
-
 // Zi is the main function for the Zi go library.
 func Zi(u string, auth string) (ZI, error) {
 	url = u
@@ -137,7 +50,97 @@ func Zi(u string, auth string) (ZI, error) {
 		log.Fatal(err)
 	}
 	if string(body) != "OK" {
-		return ziGoodReturn, errors.New("Not valid zi database")
+		return ZI{}, errors.New("Not valid zi database")
 	}
+
+	var ziGoodReturn = ZI{Get: func(key string) api.Pair {
+		u := url + "/get?key=" + key + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+
+		body, err := ioutil.ReadAll(data.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		r := api.Pair{}
+		json.Unmarshal([]byte(body), &r)
+		return r
+	}, Set: func(d api.Pair) api.Pair {
+		in, _ := json.Marshal(d)
+		u := url + "/set?data=" + strings.ReplaceAll(string(in), " ", "%20") + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+
+		body, err := ioutil.ReadAll(data.Body)
+		fmt.Println(string(body))
+		if err != nil {
+			log.Fatal(err)
+		}
+		r := api.Pair{}
+		json.Unmarshal([]byte(body), &r)
+		return r
+	}, Del: func(key string) string {
+		u := url + "/del?key=" + key + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+		return "OK"
+	}, Rename: func(old string, new string) string {
+		u := url + "/rename?origin=" + old + "&new=" + new + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+		return "OK"
+	}, GetAll: func() []api.Pair {
+		u := url + "/getall" + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+
+		body, err := ioutil.ReadAll(data.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		r := []api.Pair{}
+		json.Unmarshal([]byte(body), &r)
+		return r
+	}, GetRow: func(s string) []api.Pair {
+		u := url + "/getrow?key=" + s + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+
+		body, err := ioutil.ReadAll(data.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		r := []api.Pair{}
+		json.Unmarshal([]byte(body), &r)
+		return r
+	}, Dump: func(kv api.Pair, p string) string {
+		j, _ := json.Marshal(kv)
+		u := url + "/dump?data=" + string(j) + "&path=" + p + "&auth=" + auth
+		data, err := http.Get(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer data.Body.Close()
+		return "OK"
+	}}
+
 	return ziGoodReturn, nil
 }
