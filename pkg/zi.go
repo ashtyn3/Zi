@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/vitecoin/zi/api"
+	"github.com/ashtyn3/zi/api"
 )
 
 var url string

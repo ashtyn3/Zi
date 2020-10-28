@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	cto "github.com/vitecoin/zi/crypto"
+	cto "github.com/ashtyn3/zi/crypto"
 )
 
 type Pair struct {

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/vitecoin/zi/api"
+	"github.com/ashtyn3/zi/api"
 )
 
 type request struct {

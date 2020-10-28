@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/vitecoin/zi/api"
+	"github.com/ashtyn3/zi/api"
 )
 
 func getQuery(w http.ResponseWriter, r *http.Request) {

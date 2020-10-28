@@ -1,6 +1,6 @@
 # Zi
 
-![Go](https://github.com/Vitecoin/Zi/workflows/Go/badge.svg)
+![Go](https://github.com/ashtyn3/Zi/workflows/Go/badge.svg)
 
 _A key value database._
 
@@ -20,7 +20,7 @@ Zi should be put on a server or a local machine and in a directory with a file c
 First things first your going to want to clone the repository.
 
 ```bash
-git clone https://github.com/Vitecoin/Zi.git
+git clone https://github.com/ashtyn3/Zi.git
 ```
 
 Then all of install process is taken care of in the install file. You can just run:

@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/vitecoin/zi/api"
-	"github.com/vitecoin/zi/client"
+	"github.com/ashtyn3/zi/api"
+	"github.com/ashtyn3/zi/client"
 
 	// "math/rand"
-	"github.com/vitecoin/zi/util"
+	"github.com/ashtyn3/zi/util"
 	// "strconv"
 	"fmt"
 	"os"
 	"os/exec"
 
-	cmd "github.com/vitecoin/zi/command"
+	cmd "github.com/ashtyn3/zi/command"
 
 	"github.com/common-nighthawk/go-figure"
 )
