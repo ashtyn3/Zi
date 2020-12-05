@@ -154,12 +154,20 @@ func Set(item Pair, verbose bool) {
 
 func Del(key string, print bool) {
 	parsed := Init()
+	if strings.HasPrefix(key, "^") == true {
+		for _, item := range parsed {
+			if "^"+item.Key == key {
+				os.Remove(item.Value)
+			}
+		}
+	}
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i].Key == key {
 			parsed = append(parsed[:i], parsed[i+1:]...)
 			i--
 		}
 	}
+
 	f, err := os.Create("dump.zi")
 	if err != nil {
 		panic(err)
